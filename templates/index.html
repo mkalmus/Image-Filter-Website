@@ -1,0 +1,88 @@
+<head>
+</head>
+<body>
+
+<style>
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font: 2.4em Futura, ‘Century Gothic’, AppleGothic, sans-serif;
+    font-size: 1.2em;
+    color: #dddddd;
+    font-weight: 400;
+    background-color: #333333;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+a {
+    color: #2faced;
+    text-decoration: none;
+    border: 1px solid #2faced;
+    border-radius: 12px;
+    padding: 5px;
+    background-color: #444444;
+    margin-left: 20px;
+}
+a:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+    background-color: #112244;
+}
+.box {
+    border: 2px solid #111111;
+    border-radius: 12px;
+    background-color: #222222;
+    margin-bottom: 40px;
+    padding: 20px;
+}
+input {
+    color: #08233e;
+    font-size: 17px;
+    padding: 14px;
+    background-color: #2faced;
+    border: 2px solid #111111;
+    border-radius:10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+img {
+    max-width: 49%;
+}
+.filter {
+    padding: 10px;
+}
+</style>
+
+    <h1>Image Filters</h1>
+
+    <div class="box">
+        <h2>1. Upload Image</h2>
+        <form action="upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="image"> 
+            <input type="submit" name="submit" value="Upload Image">
+        </form>
+    </div>
+    
+    <div class="box">
+    <h2>2. Select Filter</h2>
+    <p>Please note that filter application may take some time as we have to boot up Matlab, run our image transformations, and apply them to your image. Transparency will be removed. If the image hasn't fully loaded, please refresh the page.</p>
+    <form action="apply" method="post">
+        {% for filter in filters %}
+        <div class="filter">
+            <input type="radio" name="filter" value="{{ filter }}" checked>{{filter}}</input> 
+            <a href="source/{{filter}}">View Source Code</a>
+        </div>
+        {% endfor %}
+        <br>
+        <input type="submit" name="submit" value="Apply">
+    </form>
+    </div>
+
+    {% if os.path.exists('static/images/in') %}
+    <img src="{{ url_for('static', filename='images/in') }}?cache={{ cache }}" alt="user uploaded image" />
+    {% endif %}
+    {% if os.path.exists('static/images/out.png') %}
+    <img src="{{ url_for('static', filename='images/out.png') }}?cache={{ cache }}" alt="filtered image" />
+    {% endif %}
+</body>
+
